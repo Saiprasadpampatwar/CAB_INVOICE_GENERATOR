@@ -10,4 +10,12 @@ public class InvoiceGenerator {
         double fare = (distance*COST_PER_KM+time*COST_PER_MIN);
         return Math.max(MINIMUMFARE,fare);
     }
+
+    public double calculateTotalFare(Ride[] rides) {
+        double fare=0.0;
+        for(Ride ride: rides){
+            fare += this.calculateTotalFare(ride.distance,ride.time);
+        }
+        return fare;
+    }
 }
