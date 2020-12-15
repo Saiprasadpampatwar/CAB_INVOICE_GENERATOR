@@ -11,11 +11,11 @@ public class InvoiceGenerator {
         return Math.max(MINIMUMFARE,fare);
     }
 
-    public double calculateTotalFare(Ride[] rides) {
+    public InvoiceSummary calculateTotalFare(Ride[] rides) {
         double fare=0.0;
         for(Ride ride: rides){
             fare += this.calculateTotalFare(ride.distance,ride.time);
         }
-        return fare;
+        return new InvoiceSummary(rides.length,fare);
     }
 }
