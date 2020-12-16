@@ -4,6 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.invoice.generator.InvoiceService.RideType.NORMAL;
+import static com.invoice.generator.InvoiceService.RideType.PREMIUM;
+
+
 public class InvoiceServiceTest {
 
     InvoiceService invoiceService = null;
@@ -45,6 +49,15 @@ public class InvoiceServiceTest {
         InvoiceSummary invoiceSummary = invoiceService.getInvoiceSumary(userId);
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
         Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
+    }
+
+    @Test
+    public void givenDistanceAndTimeShouldAndTypeOfCustomerReturnTotalFare() {
+        double totalFareNormal = invoiceService.calculateTotalFare(10,20,NORMAL);
+        Assert.assertEquals(120.0,totalFareNormal, 0.0);
+        double totalFarePremium = invoiceService.calculateTotalFare(10,20,PREMIUM);
+        Assert.assertEquals(190.0,totalFarePremium, 0.0);
+
     }
 
 

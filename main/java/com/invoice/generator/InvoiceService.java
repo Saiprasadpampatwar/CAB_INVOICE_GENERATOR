@@ -1,7 +1,6 @@
 package com.invoice.generator;
 
 import java.util.List;
-import java.util.Map;
 
 public class InvoiceService {
 
@@ -10,6 +9,21 @@ public class InvoiceService {
     private static final double MINIMUMFARE = 5;
     private  RideRepository rideRepository;
 
+
+
+    public enum RideType{
+        NORMAL(10,1,5),
+        PREMIUM(15,2,20);
+        public final double costPerKm;
+        public final double costPeeMin;
+        public final double minimumFare;
+
+        RideType(double costPerKm, double costPeeMin, double minimumFare) {
+            this.costPerKm = costPerKm;
+            this.costPeeMin = costPeeMin;
+            this.minimumFare = minimumFare;
+        }
+    }
 
     public InvoiceService() {
         this.rideRepository = new RideRepository();
@@ -37,5 +51,11 @@ public class InvoiceService {
     public InvoiceSummary getInvoiceSumary(String userId) {
         List<Ride> ridesList = rideRepository.getRidesData(userId);
         return calculateTotalFare(ridesList.toArray(new Ride[ridesList.size()]));
+    }
+
+    public double calculateTotalFare(double distance, double time, RideType rideType) {
+        double fare=0;
+        fare = distance*rideType.costPerKm+time*rideType.costPeeMin;
+        return Math.max(rideType.minimumFare,fare);
     }
 }
